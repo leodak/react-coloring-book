@@ -1,6 +1,21 @@
 import React from 'react';
-import Style from './CurrentPage.css';
+import styled from 'styled-components';
 import brushImg from '../../img/paintbrush.png';
+
+const CurrPage = styled.div`
+	position: relative;
+	margin: 80px auto;
+`;
+
+const CurrImage = styled.svg`
+		margin: 0 auto;
+		display: block;
+`;
+
+const PageTitle = styled.h1`
+	text-align: center;
+`;
+
 
 const CurrentPage = props => {
 	const thisImg = props.currImg;
@@ -39,28 +54,25 @@ const CurrentPage = props => {
 			let tempFill = {hex: curFill}
 			props.changeColorState(tempFill)
 			props.changeDropperState(dropperState)
-
 		}else{
 			props.changePathColorState(imgState, pathId, colorBg)
 		}
 	}
 
 	return (
-		<div style={Style} className="container">
-			<div key={thisImg.id} className='current-page'>
-				<div>{thisImg.name}</div>
-				<svg style={{cursor: props.dropperState ? `url(${props.dropperImg}) 2 30, auto` : `url(${brushImg}) 2 30, auto`,}}  id={`svg-id-${thisImg.id}`} xmlns="http://www.w3.org/2000/svg" x={thisImg.x} y={thisImg.y} width={thisImg.width} height={thisImg.height} viewBox={thisImg.viewBox} enableBackground="new 0 0 612 792" xmlSpace="preserve" className={`current-image ${props.dropperState ? 'select-color' : ''}`}>
-					{thisImg.blackBg}
-					<g id="color">
-						{thisImg.paths.map(path => (
-							<path key={path.id} fill={path.fill} stroke="#000000" strokeMiterlimit="10" d={path.d} onClick={() => pathClickEvent(path.fill, props.dropperState, props.imageState, path.id, props.colorState.background)} />
-						))}
-					</g>
-				</svg>
-				<div onClick={downloadSvg}>Download Image</div>
-				<div onClick={startOver}>Start Over</div>
-			</div>
-		</div>
+		<CurrPage key={thisImg.id} className='container current-page'>
+			<PageTitle>{thisImg.name}</PageTitle>
+			<CurrImage style={{cursor: props.dropperState ? `url(${props.dropperImg}) 2 30, auto` : `url(${brushImg}) 2 30, auto`,}}  id={`svg-id-${thisImg.id}`} xmlns="http://www.w3.org/2000/svg" x={thisImg.x} y={thisImg.y} width={thisImg.width} height={thisImg.height} viewBox={thisImg.viewBox} enableBackground="new 0 0 612 792" xmlSpace="preserve" className={`current-image ${props.dropperState ? 'select-color' : ''}`}>
+				{thisImg.blackBg}
+				<g id="color">
+					{thisImg.paths.map(path => (
+						<path key={path.id} fill={path.fill} stroke="#000000" strokeMiterlimit="10" d={path.d} onClick={() => pathClickEvent(path.fill, props.dropperState, props.imageState, path.id, props.colorState.background)} />
+					))}
+				</g>
+			</CurrImage>
+			<div onClick={downloadSvg}>Download Image</div>
+			<div onClick={startOver}>Start Over</div>
+		</CurrPage>
 	)
 }
 
